@@ -18,9 +18,8 @@ def accounts(num: int):
 def list_accounts(s, e):
     ret = []
     for i in range(s, e):
-        balance = get_balance(i)
-        ret.append((i, accounts(i).address, float(P.fromWei(balance, "ether"))))
+        ret.append((i, accounts(i).address, get_balance(i)))
     return ret
 
 def get_balance(num):
-    return P.eth.getBalance(accounts(num).address)
+    return float(P.fromWei(P.eth.getBalance(accounts(num).address), "ether"))
