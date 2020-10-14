@@ -15,11 +15,12 @@ def accounts(num: int):
     return web3.eth.Account.privateKeyToAccount(privates(num))
 
 
-def list_accounts(s, e):
+def list_accounts(s, e, callback=lambda x: None):
     ret = []
     for i in range(s, e):
-        ret.append((i, accounts(i).address, get_balance(i)))
+        ret.append((i, accounts(i).address, callback(i)))
     return ret
+
 
 def get_balance(num):
     return float(P.fromWei(P.eth.getBalance(accounts(num).address), "ether"))

@@ -9,9 +9,11 @@ def update_gas(tx):
     return tx
 
 
-def sign(tx, sk):
+def sign(tx, i, nonce_bias=0):
+    if not tx.get("nonce"):
+        tx["nonce"] = nonce_bias + P.eth.getTransactionCount(accounts(i).address)
     tx = update_gas(tx)
-    return P.eth.account.sign_transaction(tx, sk)
+    return P.eth.account.sign_transaction(tx, privates(i))
 
 
 def send(signed):
