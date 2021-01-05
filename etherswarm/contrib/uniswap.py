@@ -94,8 +94,8 @@ class Pair:
 
     def bid(self, amount, cid, ttl=5, rate=0.01, speed="standard"):
         tx = uniswap.ROUTER.functions.swapExactTokensForTokens(
-            int(amount * 10 ** self.token0.decimals),
-            int(amount * self.ask_price * (1-rate) * 10 ** self.token1.decimals),
+            int(amount * 10 ** self.token1.decimals),
+            int(amount * self.bid_price * (1-rate) * 10 ** self.token0.decimals),
             self.path,
             accounts(cid).address,
             int(time.time() + (ttl * 60))
