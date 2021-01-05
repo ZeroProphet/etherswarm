@@ -1,6 +1,12 @@
 import os
 import web3
+import time
 from etherswarm.contract import load_contract
+from etherswarm.accounts import accounts, privates, get_balance, list_accounts, as_keystore
+from etherswarm.provider import provider as P
+from etherswarm.ethereum import sign, send, transfer
+from etherswarm.gasprice import gasPrice
+
 
 FACTORY = load_contract(
     "0x5C69bEe701ef814a2B6a3EDD4B1652CB9cc5aA6f",
@@ -74,8 +80,8 @@ class Pair:
             self.path
         ).call()[-1] / (10 ** self.token1.decimals)
 
-    def ask(self, amount, cid, ttl=5, rate=0.01, speed="standard"):
-        tx = uniswap.ROUTER.functions.swapExactTokensForTokens(
+    def ask(self, amount, cid, ttl=5, rate=0.01, speed="fast"):
+        tx = ROUTER.functions.swapExactTokensForTokens(
             int(amount * 10 ** self.token0.decimals),
             int(amount * self.ask_price * (1-rate) * 10 ** self.token1.decimals),
             self.path[::-1],
@@ -92,8 +98,8 @@ class Pair:
         return send(sign(tx, cid)).hex()
 
 
-    def bid(self, amount, cid, ttl=5, rate=0.01, speed="standard"):
-        tx = uniswap.ROUTER.functions.swapExactTokensForTokens(
+    def bid(self, amount, cid, ttl=5, rate=0.01, speed="fast"):
+        tx = ROUTER.functions.swapExactTokensForTokens(
             int(amount * 10 ** self.token1.decimals),
             int(amount * self.bid_price * (1-rate) * 10 ** self.token0.decimals),
             self.path,
