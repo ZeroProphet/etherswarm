@@ -74,8 +74,37 @@ class Pair:
             self.path
         ).call()[-1] / (10 ** self.token1.decimals)
 
-    def ask(self, amount):
-        pass
+    def ask(self, amount, cid, ttl=5, rate=0.01, speed="standard"):
+        tx = uniswap.ROUTER.functions.swapExactTokensForTokens(
+            int(amount * 10 ** self.token0.decimals),
+            int(amount * self.ask_price * (1-rate) * 10 ** self.token1.decimals),
+            self.path[::-1],
+            accounts(cid).address,
+            int(time.time() + (ttl * 60))
+        ).buildTransaction({
+            "from": accounts(cid).address,
+            "chainId": 1,
+            "nonce": P.eth.getTransactionCount(accounts(cid).address),
+            'gas': 2000,
+            "value": 0,
+            "gasPrice": gasPrice(speed)
+        })
+        return send(sign(tx, cid)).hex()
 
-    def bid(self, amount):
-        pass
+
+    def bid(self, amount, cid, ttl=5, rate=0.01, speed="standard"):
+        tx = uniswap.ROUTER.functions.swapExactTokensForTokens(
+            int(amount * 10 ** self.token0.decimals),
+            int(amount * self.ask_price * (1-rate) * 10 ** self.token1.decimals),
+            self.path,
+            accounts(cid).address,
+            int(time.time() + (ttl * 60))
+        ).buildTransaction({
+            "from": accounts(cid).address,
+            "chainId": 1,
+            "nonce": P.eth.getTransactionCount(accounts(cid).address),
+            'gas': 2000,
+            "value": 0,
+            "gasPrice": gasPrice(speed)
+        })
+        return send(sign(tx, cid)).hex()
