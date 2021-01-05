@@ -30,4 +30,4 @@ def transfer(_fid, _tid, _value, nonce_bias=0, speed="standard"):
         "value": P.toWei(_value, "ether"),
         "gasPrice": gasPrice(speed)
     }
-    return send(sign(tx, privates(_fid))).hex()
+    return send(sign(tx, _fid)).hex()

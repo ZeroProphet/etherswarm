@@ -6,6 +6,8 @@ from functools import partial
 def load_contract(addr, abi_path, prov=P):
     with open(abi_path) as f:
         abi = json.load(f)
+        if "abi" in abi.keys():
+            abi = abi["abi"]
         ctrt = P.eth.contract(addr, abi=abi)
         for fn in ctrt.functions._functions:
             fn_name = fn["name"]
