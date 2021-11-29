@@ -1,3 +1,4 @@
 requests==2.24.0
 web3==5.12.0
 python-dotenv==0.14.0
+pycryptodome==3.11.0

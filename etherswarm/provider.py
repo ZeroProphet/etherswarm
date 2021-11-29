@@ -12,6 +12,4 @@ def init_provider(entry_point=env("ENTRY_POINT")) -> Web3:
         return Web3(Web3.HTTPProvider(entry_point))
     raise Exception("Unknow or Invalid entry point: %s" % entry_point)
 
-provider = None
-if not provider:
-    provider = init_provider()
+provider = init_provider()

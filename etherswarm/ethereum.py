@@ -5,7 +5,7 @@ from etherswarm.gasprice import gasPrice
 
 def update_gas(tx):
     gas = P.eth.estimateGas(tx)
-    tx.update({"gas": int(gas * 1.2)})
+    tx.update({"gas": int(gas * 1.1)})
     return tx
 
 
@@ -20,7 +20,7 @@ def send(signed):
     return P.eth.sendRawTransaction(signed.rawTransaction)
 
 
-def transfer(_fid, _tid, _value, nonce_bias=0, speed="standard"):
+def transfer(_fid, _tid, _value, nonce_bias=0, speed="fast"):
     tx = {
         "from": accounts(_fid).address,
         "to": accounts(_tid).address,

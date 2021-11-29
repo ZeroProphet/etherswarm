@@ -47,7 +47,9 @@ def not_found(cmd):
 def output(fn):
     @wraps(fn)
     def _(*args, **kwargs):
-        return print(fn(*args, **kwargs))
+        ret = fn(*args, **kwargs)
+        print(ret)
+        return ret
     return _
 
 
